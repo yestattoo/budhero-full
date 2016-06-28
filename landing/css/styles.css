@@ -1,0 +1,229 @@
+html {
+  overflow-y: scroll;
+  overflow-x: hidden; }
+
+body {
+  position: relative;
+  font-family: 'Titillium Web', sans-serif !important; }
+
+h1 {
+  font-size: 4em !important;
+  font-weight: 300 !important;
+  margin: .5em 1em; }
+
+h2 {
+  text-align: center;
+  font-size: 4em;
+  color: rgba(34, 34, 34, 0.9); }
+  @media screen and (max-width: 740px) {
+    h2 {
+      font-size: 2em; } }
+
+p {
+  color: #572f74;
+  font-size: 22px;
+  text-align: center; }
+
+section {
+  padding: 40px 0; }
+
+@media (min-width: 768px) {
+  section {
+    padding: 100px 0; } }
+.logo {
+  font-family: 'Yanone Kaffeesatz', sans-serif !important;
+  position: relative;
+  text-align: center;
+  color: #008420 !important; }
+
+.gray-text {
+  color: #f0f0f0 !important; }
+
+.white-text {
+  color: white !important; }
+
+.purple-text {
+  color: #572f74 !important; }
+
+.green-btn {
+  background-color: #008420 !important;
+  color: white !important;
+  border-radius: 0px !important; }
+  .green-btn:disabled {
+    background-color: #572f74 !important; }
+
+.nav-container {
+  height: 120px;
+  width: 100%; }
+
+#main-nav {
+  text-align: center;
+  z-index: 1001;
+  border: none; }
+  #main-nav .nav > li {
+    display: inline-block;
+    padding: 30px;
+    -webkit-transition: all .5s;
+    transition: all .5s; }
+  #main-nav .nav > li > a {
+    color: white;
+    -webkit-transition: all .5s;
+    transition: all .5s; }
+  #main-nav .nav > li > a:focus, #main-nav .nav > li > a:hover {
+    background-color: black;
+    color: white; }
+  #main-nav #nav-logo {
+    padding: 0px;
+    overflow-y: hidden;
+    max-height: 0;
+    -webkit-transition: all .5s;
+    transition: all .5s; }
+
+#main-nav.affix {
+  top: 0px; }
+  #main-nav.affix .nav > li {
+    padding: 10px; }
+  #main-nav.affix #nav-logo {
+    font-size: 2em;
+    padding: 10px;
+    max-height: 40px; }
+
+#main {
+  height: 300px;
+  padding: 50px 0px; }
+
+#welcome-message {
+  color: white; }
+
+#main-message {
+  text-align: center;
+  color: light-gray; }
+
+#link-form {
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 240px;
+  text-align: center;
+  padding: 30px 30px; }
+  @media screen and (max-width: 740px) {
+    #link-form {
+      padding: 10px 10px; } }
+
+#awards {
+  background-color: #f0f0f0; }
+
+/****** LOGIN MODAL ******/
+.modal-dialog {
+  margin-top: 60px !important; }
+
+.loginmodal-container {
+  padding: 30px;
+  max-width: 350px;
+  width: 100% !important;
+  background-color: #F7F7F7;
+  margin: 0 auto;
+  border-radius: 2px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  overflow: hidden; }
+
+.loginmodal-container h1 {
+  text-align: center;
+  font-size: 1.8em;
+  font-family: 'Yanone Kaffeesatz', sans-serif; }
+
+#phone-input {
+  font-size: 14px; }
+
+.loginmodal {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  height: 36px;
+  padding: 0 8px;
+  /* border-radius: 3px; */
+  /* -webkit-user-select: none;
+    user-select: none; */ }
+
+.loginmodal-submit {
+  /* border: 1px solid #3079ed; */
+  border: 0px;
+  color: #fff;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #4d90fe;
+  padding: 17px 0px;
+  font-size: 14px;
+  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */ }
+
+.loginmodal-submit:hover {
+  /* border: 1px solid #2f5bb7; */
+  border: 0px;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  background-color: #357ae8;
+  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */ }
+
+.loginmodal-container a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 400;
+  text-align: center;
+  display: inline-block;
+  opacity: 0.6;
+  transition: opacity ease 0.5s; }
+
+.login-help {
+  font-size: 12px; }
+
+#main-nav {
+  padding: 0px;
+  background: linear-gradient(#572f74, black);
+  background-size: 1000% 1000%;
+  -webkit-animation: fade-bg 80s ease infinite;
+  -moz-animation: fade-bg 80s ease infinite;
+  -o-animation: fade-bg 80s ease infinite;
+  animation: fade-bg 80s ease infinite; }
+
+#main, #contact {
+  background: linear-gradient(black, #572f74);
+  background-size: 1000% 1000%;
+  -webkit-animation: fade-bg 80s ease infinite;
+  -moz-animation: fade-bg 80s ease infinite;
+  -o-animation: fade-bg 80s ease infinite;
+  animation: fade-bg 80s ease infinite; }
+
+@-webkit-keyframes fade-bg {
+  0% {
+    background-position: 15% 0%; }
+
+  50% {
+    background-position: 86% 100%; }
+
+  100% {
+    background-position: 15% 0%; } }
+@-moz-keyframes fade-bg {
+  0% {
+    background-position: 15% 0%; }
+
+  50% {
+    background-position: 86% 100%; }
+
+  100% {
+    background-position: 15% 0%; } }
+@-o-keyframes fade-bg {
+  0% {
+    background-position: 15% 0%; }
+
+  50% {
+    background-position: 86% 100%; }
+
+  100% {
+    background-position: 15% 0%; } }
+@keyframes fade-bg {
+  0% {
+    background-position: 15% 0%; }
+
+  50% {
+    background-position: 86% 100%; }
+
+  100% {
+    background-position: 15% 0%; } }

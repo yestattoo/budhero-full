@@ -1,0 +1,355 @@
+
+//// variables
+$green: #008420; // if changed, update theme roller as well
+$light-green: #ccffcc;
+$purple: #572f74;
+$light-purple: #cc99ff;
+$trans-black: rgba(0,0,0,0.55);
+$light-yellow: #ffffcc;
+$dark-gray: #222222;
+$gray: #ABABAB;
+$light-gray: #F0F0F0;
+
+$small-screen: 740px;
+$large-font-size: 2em;
+$font-size: 1.5em;
+$small-font-size: 0.8em;
+
+// imported variables
+$body-bg: #c1bdba;
+$form-bg: $dark-gray;
+// $form-bg: #13232f;
+$white: #ffffff;
+
+$main: $purple;
+$main-light: lighten($main,5%);
+$main-dark: darken($main,5%);
+
+$gray-light: $light-gray;
+$gray: #ddd;
+
+$thin: 300;
+$normal: 400;
+$bold: 600;
+$br: 4px;
+
+html {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+body {
+  position: relative;
+  // background:$body-bg;
+  // background: $dark-gray;
+  font-family: 'Titillium Web', sans-serif !important;
+}
+
+h1 {
+    font-size: 4em !important;
+    font-weight:$thin !important;
+    margin: .5em 1em;
+    
+}
+h2 {
+    text-align: center;
+    font-size:4em;
+    color: rgba($dark-gray,.9);
+    @media screen and (max-width: $small-screen) {
+        font-size:2em;
+    }
+}
+p {
+    color: $purple;
+    // color: rgba($dark-gray,.9);
+    font-size:22px;
+    text-align: center;
+}
+
+section {
+    padding: 40px 0;
+}
+
+@media(min-width:768px) {
+    section {
+        padding: 100px 0;
+    }
+}
+
+.logo {
+  font-family: 'Yanone Kaffeesatz', sans-serif !important;
+  position: relative;
+  text-align: center;
+  color:$green !important;
+  // position: absolute;
+  // top: 0px;
+  // left: 0px;
+  // @media screen and (max-width: $small-screen) {
+  //     position: relative;
+  //     text-align: center;
+  // }
+}
+.gray-text {
+  color:$light-gray !important;
+}
+.white-text{
+  color:white !important; 
+}
+.purple-text{
+  color:$purple !important;
+}
+.green-btn {
+  background-color: $green !important;
+  color: white !important;
+  border-radius: 0px !important;
+  &:disabled {
+    background-color: $purple !important;
+  }
+}
+
+.nav-container {
+  height: 120px;
+  width: 100%;
+}
+
+#main-nav {
+  text-align: center;
+  z-index: 1001;
+  // width: 100%;
+  // height: 100px;
+  border: none;
+  .nav > li {
+    display: inline-block;
+    padding: 30px;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+  }
+  .nav > li > a {
+    color: white;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+  }
+  .nav > li > a:focus, .nav > li > a:hover {
+    background-color: black;
+    color: white;
+  }
+  #nav-logo {
+    padding: 0px;
+    overflow-y: hidden;
+    max-height: 0;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+  }
+}
+
+#main-nav.affix {
+  top: 0px;
+  .nav > li {
+    padding: 10px;
+
+  }
+  #nav-logo {
+    font-size: 2em;
+    padding: 10px;
+    max-height: 40px;
+
+  }
+}
+
+#main {
+    height: 300px;
+    padding: 50px 0px;
+    // border: solid #ddd;
+    // border-width: 0 1px 1px 1px;
+}
+
+#welcome-message {
+    // margin-top: 20vh;
+    color: white;
+}
+
+#main-message {
+  // font-size:$small-font-size;
+  text-align: center;
+  color: light-gray;
+}
+
+
+#link-form {
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 240px;  
+  text-align: center;
+  padding: 30px 30px;
+  @media screen and (max-width: $small-screen) {
+    padding: 10px 10px;
+  }
+}
+
+#awards {
+  background-color: $light-gray;
+}
+
+
+#contact {
+  // background-color: gray;
+}
+
+
+/****** LOGIN MODAL ******/
+.modal-dialog {
+  margin-top: 60px !important;
+}
+.loginmodal-container {
+  padding: 30px;
+  max-width: 350px;
+  width: 100% !important;
+  background-color: #F7F7F7;
+  margin: 0 auto;
+  border-radius: 2px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  // font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+.loginmodal-container h1 {
+  text-align: center;
+  font-size: 1.8em;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+// .loginmodal-container input[type=submit] {
+//   width: 100%;
+//   display: block;
+//   margin-bottom: 10px;
+//   position: relative;
+// }
+
+// .loginmodal-container input[type=text], input[type=password] {
+//   height: 44px;
+//   font-size: 16px;
+//   width: 100%;
+//   margin-bottom: 10px;
+//   -webkit-appearance: none;
+//   background: #fff;
+//   border: 1px solid #d9d9d9;
+//   border-top: 1px solid #c0c0c0;
+//   border-radius: 2px;
+//   padding: 0 8px;
+//   box-sizing: border-box;
+//   -moz-box-sizing: border-box;
+// }
+
+// .loginmodal-container input[type=text]:hover, input[type=password]:hover {
+//   border: 1px solid #b9b9b9;
+//   border-top: 1px solid #a0a0a0;
+//   -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+//   -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+//   box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+// }
+
+#phone-input {
+  font-size: 14px;
+}
+.loginmodal {
+  text-align: center;
+  font-size: 14px;
+  // font-family: 'Arial', sans-serif;
+  font-weight: 700;
+  height: 36px;
+  padding: 0 8px;
+/* border-radius: 3px; */
+/* -webkit-user-select: none;
+  user-select: none; */
+}
+
+.loginmodal-submit {
+  /* border: 1px solid #3079ed; */
+  border: 0px;
+  color: #fff;
+  text-shadow: 0 1px rgba(0,0,0,0.1); 
+  background-color: #4d90fe;
+  padding: 17px 0px;
+  // font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 14px;
+  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
+}
+
+.loginmodal-submit:hover {
+  /* border: 1px solid #2f5bb7; */
+  border: 0px;
+  text-shadow: 0 1px rgba(0,0,0,0.3);
+  background-color: #357ae8;
+  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
+}
+
+.loginmodal-container a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 400;
+  text-align: center;
+  display: inline-block;
+  opacity: 0.6;
+  transition: opacity ease 0.5s;
+} 
+
+.login-help{
+  font-size: 12px;
+}
+
+
+///////animations
+
+#main-nav {
+  padding: 0px;
+  background: linear-gradient(#572f74, #000000);
+  // background: linear-gradient(109deg, #27ae60, #27ae60, #000000, #572f74, #572f74);
+  background-size: 1000% 1000%;
+
+  -webkit-animation: fade-bg 80s ease infinite;
+  -moz-animation: fade-bg 80s ease infinite;
+  -o-animation: fade-bg 80s ease infinite;
+  animation: fade-bg 80s ease infinite;
+
+}
+
+#main, #contact  {
+  background: linear-gradient(#000000, #572f74);
+  // background: linear-gradient(109deg, #27ae60, #27ae60, #000000, #572f74, #572f74);
+  background-size: 1000% 1000%;
+
+  -webkit-animation: fade-bg 80s ease infinite;
+  -moz-animation: fade-bg 80s ease infinite;
+  -o-animation: fade-bg 80s ease infinite;
+  animation: fade-bg 80s ease infinite;
+
+}
+// background: linear-gradient(109deg, #27ae60, #27ae60, #000000, #572f74, #572f74);
+// background-size: 1000% 1000%;
+
+// -webkit-animation: fade-bg 59s ease infinite;
+// -moz-animation: fade-bg 59s ease infinite;
+// -o-animation: fade-bg 59s ease infinite;
+// animation: fade-bg 59s ease infinite;
+
+@-webkit-keyframes fade-bg {
+    0%{background-position:15% 0%}
+    50%{background-position:86% 100%}
+    100%{background-position:15% 0%}
+}
+@-moz-keyframes fade-bg {
+    0%{background-position:15% 0%}
+    50%{background-position:86% 100%}
+    100%{background-position:15% 0%}
+}
+@-o-keyframes fade-bg {
+    0%{background-position:15% 0%}
+    50%{background-position:86% 100%}
+    100%{background-position:15% 0%}
+}
+@keyframes fade-bg { 
+    0%{background-position:15% 0%}
+    50%{background-position:86% 100%}
+    100%{background-position:15% 0%}
+}

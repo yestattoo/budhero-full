@@ -1,0 +1,500 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<title>Bud&#9733;Hero</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="apple-mobile-web-app-title" content="Bud&#9733;Hero">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<!-- Icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/budhero-icon-114x114-precomposed.png"/>
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/budhero-icon-144x144-precomposed.png"/>
+	<link rel="shortcut icon" type="image/png" href="img/budhero-favicon.png"/>
+
+	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+	<link href='css/budhero-main.css' rel='stylesheet' type='text/css'>
+	<link href='css/jquerymobile-budhero-theme.css' rel='stylesheet' type='text/css'>
+	<link href='css/jquery.mobile.custom.structure.css' rel='stylesheet' type='text/css'>
+
+
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js"></script>
+    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script> -->
+    <script src="http://www.parsecdn.com/js/parse-1.3.2.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/jquery.mobile.custom.js"></script>
+	
+</head>
+
+<body>
+
+	<!-- welcome page -->
+	<div data-role="page" id="welcome">
+		<div role="main" class="ui-content">
+			<!-- <div class="logo"><img src="img/budhero-logo-small.png"></div> -->
+			<div class="logo"><span class="main-font">Bud&#9733;Hero</span></div>
+			<div class="welcome-options">
+			</div>
+		</div>
+	</div><!-- /welcome page -->
+
+	<!-- home page -->
+	<div data-role="page" id="home">
+		<div href="#home/featured" title="Featured"><div class="home-category">
+			<div class="main-link main-font more-link">Bud Awards<br><span class="small-font tag purple-btn featured-count"><span>0</span> nominees</span></div>
+		</div></div>
+		<div href="#home/specials" title="Specials"><div class="home-category">
+			<div class="main-link main-font more-link">Specials <br><span class="small-font tag discount specials-count"><span>0</span> price drops</span></div>
+		</div></div>
+		<div href="#home/everything" title="Everything"><div class="home-category">
+			<div class="main-link main-font more-link"> Everything <br><span class="small-font tag everything-count"><span>0</span> items</span></div>
+		</div></div>
+
+		<div id="stores">
+			<div class="main-link main-font top-stores">Collectives</div>
+			<div class="store-sort-options">
+				<!-- <a class="outline-btn sort-option new ui-link" title="New">New</a> -->
+<!-- 				<a class="outline-btn sort-option top ui-link active" title="Top">Top</a>
+				<a class="outline-btn sort-option local ui-link" title="Local">Local</a> -->
+			</div>
+			<!-- <label><span class="d-or-p">Delivering to </span><a class="zip"> </a></label> -->
+
+			<ul data-role="listview" class="listview store-list">
+			</ul>
+			<a><div class="more-section">
+				<span>View more</span>
+			</div></a>
+		</div>
+
+	</div><!-- /home page -->
+
+	<!-- browse page -->
+	<div data-role="page" id="browse">
+		<!-- <input type="text" name="search" id="search-input" value="" placeholder="Search"> -->
+
+		<div class="menu"></div>
+	</div><!-- /browse page -->
+
+	<!-- store profile page -->
+	<div data-role="page" id="store-profile">
+
+	</div> <!-- /store profile page -->
+
+	<script type="text/html" id="store-template">
+		<div data-role="header" class="header ui-header ui-bar-inherit">
+			<span class="back flaticon-left left-option"></span>
+			<h2 class="ui-title" role="heading"></h2>
+			<span><a data-role="none" class="right-option info-link">Info</a></span>
+		</div>
+
+		<ul data-role="listview" class="listview store-list ui-listview">
+			<li class="" data-icon="false">
+				<a class="store-link main-font ui-btn">
+					<%= attributes.name %>
+					<span class="store-text"><%= (attributes.delivery) ? "Delivery" : ""%> <%= (attributes.retail && attributes.delivery) ? "&" : ""%> <%= (attributes.retail) ? "Pickup" : ""%> <%= getHours() %> </span>
+					<a href="tel:<%= attributes.phone %>" ><span class="flaticon-phone right-icon green"></span></a>
+				</a>
+			</li>
+		</ul>
+
+		<div data-role="popup" id="info" class="ui-popup ui-body-inherit">
+			<div class="about">
+				<label>About</label>
+				<%= attributes.description %>
+			</div>
+			<div class="hours">
+				<label>Hours</label>
+				Monday &middot; <%= getHours(1) %> <br>
+				Tuesday &middot; <%= getHours(2) %><br>
+				Wednesday &middot; <%= getHours(3) %><br>
+				Thursday &middot; <%= getHours(4) %><br>
+				Friday &middot; <%= getHours(5) %><br>
+				Saturday &middot; <%= getHours(6) %><br>
+				Sunday &middot; <%= getHours(0) %>
+			</div>
+		</div>
+
+		<div class="menu">
+		</div>
+	</script>
+
+	<script type="text/html" id="item-thumb-template">
+		<h2 class="item-title small-font"><%= attributes.name %></h2>
+		<div class="item-thumb-image" style="background-image: url(<% if (typeof(attributes.fileThumbSmall)!== 'undefined') { print(attributes.fileThumbSmall._url) } else { %><% } %>)"></div>
+		<a class="thumb-add small-font" data-amount=<%= attributes.price[0].amount %> data-total=<%= attributes.price[0].total*(1-attributes.special) %>>
+		<%= attributes.price[0].amount %><%= (_.intersection(attributes.category, ["Herb", "Concentrate","Wax"]).length) ? ' g' : ' item' %><%= (attributes.price[0].amount>1) ? 's' : '' %> &middot; $<%= Math.round(attributes.price[0].total*(1-attributes.special)) %>
+		</a>
+	</script>
+
+
+	<!-- list page-->
+	<div data-role="page" id="list">
+
+		<div data-role="header" data-position="fixed" data-tap-toggle="false">
+			<span class="back flaticon-left left-option"></span>
+			<h2 class="title"></h2>
+			<span><a class="filter-menu-button right-option">Filter</a></span>
+		</div>
+
+		<!-- filter menu & title / sort options -->
+		<div data-role="popup" data-shadow="false" data-overlay-theme="b" id="filter-list" class="filter">
+			<a data-role="none" class="exit-btn" data-rel="back">X</a>
+			<div class="filter-group">
+				<div class="filter-option">Indica</div>
+				<div class="filter-option">Sativa</div>
+				<div class="filter-option">Hybrid</div>
+				<div class="filter-option">Lab Tested</div>
+			</div>
+		</div>
+		
+		<div class="list-header">
+			<div class="list-title" style="">Top Rated</div>
+			<div class="options">
+				<a class="outline-btn sort-option new" title="Most Recent">New</a>
+				<a class="outline-btn sort-option top" title="Top Rated" style="display: none;">Top</a>
+				<a class="outline-btn sort-option price" title="Lowest $$">$$</a>
+			</div>
+		</div>
+
+		<div class="items">
+		</div>
+
+		<a><div class="more-section">
+			<span>View more</span>
+		</div></a>
+
+	</div> <!-- /list page -->
+
+
+
+
+	<!-- list thumbs page page-->
+	<div data-role="page" id="thumbs">
+
+		<div data-role="header" data-position="fixed" data-tap-toggle="false">
+			<span class="back flaticon-left left-option"></span>
+			<h2 class="title"></h2>
+			<span><a class="filter-menu-button right-option">Filter</a></span>
+		</div>
+
+		<!-- filter menu & title / sort options -->
+		<div data-role="popup" data-shadow="false" data-overlay-theme="b" id="filter-list" class="filter">
+			<a data-role="none" class="exit-btn" data-rel="back">X</a>
+			<div class="filter-group">
+				<div class="filter-option">Indica</div>
+				<div class="filter-option">Sativa</div>
+				<div class="filter-option">Hybrid</div>
+				<div class="filter-option">Lab Tested</div>
+			</div>
+		</div>
+		
+		<div class="list-header">
+			<div class="list-title" style=""></div>
+			<div class="options">
+				<a class="outline-btn sort-option new" title="Most Recent">New</a>
+				<a class="outline-btn sort-option top" title="Top Rated">Top</a>
+				<a class="outline-btn sort-option price" title="Lowest $$">$$</a>
+			</div>
+		</div>
+
+		<div class="items">
+		</div>
+
+		<a><div class="more-section">
+			<span>View more</span>
+		</div></a>
+
+	</div> <!-- /list thumbs page -->
+
+	<div data-role="page" id="item">
+		<div data-role="header" data-position="fixed" data-tap-toggle="false">
+			<span class="back flaticon-left left-option"></span>
+			<h2 class="title"></h2>
+		</div>
+		<div class="profile-container">
+		</div>
+	</div> <!-- /item profile page -->
+
+	<script type="text/html" id="item-profile-template">
+		<div class="item">
+			<div class="item-title main-font gray">
+				<%= attributes.name %>
+			</div>
+			<span class="tags">
+
+				<% _.each( attributes.type, function( type ) { 
+					if(type !== null){ %>
+						<span class="tag"><%= type %></span>	
+					<% }
+				 }); %>
+
+				<% _.each( attributes.testResult, function( result ) { %>
+					<span class="tag"><%= result.type %> &#8226; <%= result.total %></span>
+				<% }); %>
+				<% if (attributes.special > 0) { %>
+					<span class="discount tag"><%= attributes.special * 100 %>% off</span>
+				<% } %>
+			</span>
+			<div class="item-img" style="background-image: url(<% if (typeof(attributes.fileThumb)!== 'undefined') { print(attributes.fileThumb._url) } else { %><% } %>)">
+				
+				<div class="item-bottom">
+					<div class="item-options">
+						<button class="minus ui-btn ui-btn-inline" title="Minus">-</button>
+						<span class="item-range"></span>
+						<button class="plus ui-btn ui-btn-inline" title="Plus">+</button>
+					</div>
+				</div>
+				<% if (attributes.description) { %>
+				<div class="item-info">
+					<span class="icon-btn info-icon flaticon-info" title="Info"></span>
+					<p class="small-font">
+						<% if (attributes.lab) { %>
+							<span class="tested">Tested by <%= attributes.lab %></span>
+						<% } %>
+						<%= attributes.description %>
+					</p>
+				</div>
+				<% } %>	
+			</div>
+			<div class="quick-add-options">
+				<% _.each( attributes.price, function( price ) { %>
+					<a class="add-btn outline-btn" data-amount=<%= price.amount %> data-total=<%= price.total*(1-attributes.special) %>>
+						<%= price.amount %><%= (_.intersection(attributes.category, ["Herb", "Concentrate","Wax"]).length) ? ' g' : ' item' %><%= (price.amount>1) ? 's' : '' %> &middot; $<%= Math.round(price.total*(1-attributes.special)) %>
+					</a>
+				<% }); %>
+			</div>
+			<a class="store-link">
+				<span class="store-name"></span>
+			</a>
+		</div>
+	</script>
+
+	<!-- Order page-->
+	<div data-role="page" id="order">
+		<div data-role="header" class="header ui-header ui-bar-inherit">
+			<span class="back flaticon-left left-option"></span>
+			<h2 class="ui-title" role="heading">Order</h2>
+			<span class="continue flaticon-right right-option" style="display:none;"></span>
+		</div>
+
+		<ul data-role="listview" data-split-icon="delete" data-split-theme="a" class="order-list ui-listview">
+		</ul>
+
+		<div class="gray order-total">Your order is empty!!</div>
+
+		<div class="order-options pad" style="display:none;">
+			<label>Options</label>
+
+<!-- 			<div href="#" class="order-d-or-p">
+				<a class="delivery-link active outline-btn">Delivery</a> 
+				<a class="pickup-link outline-btn">Pickup</a>
+			</div> -->
+
+			<div href="#" class="order-payment">
+				<a title="Cash" class="active cash-select outline-btn">Cash</a>
+<!-- 				<a title="Credit" class="credit-select outline-btn" style="display:none;">Credit</a>
+				<a title="Debit" class="debit-select outline-btn" style="display:none;">Debit</a> -->
+			</div>
+			<input type="text" name="address" id="address-input" class="main-link main-font main-input" value="" placeholder="Address*">
+			<input type="text" name="note" id="note-input" class="main-link main-font main-input" value="" placeholder="Note">
+		</div>
+		<div class="pad">
+			<a class="store-link ui-btn"><div class="main-font">Continue Shopping</div><div class="order-store"></div></a>
+		</div>
+
+		<div class="bottom-fix">
+			<button id="submit-button" class="ui-btn green-btn main-link main-font bottom-link" style="display:none;">Submit Order</button>
+		</div>
+	</div><!-- order page -->
+
+	<script type="text/html" id="order-item-template">
+		<a class="main-font profile-link ui-btn">
+			<%= attributes.name %>
+			<span class="flaticon-info" title="Info"></span>
+		</a>
+		<div class="adjust-options">
+			<button class="icon-btn delete ui-btn ui-btn-inline" title="delete">x</button>
+			<button class="icon-btn minus ui-btn ui-btn-inline" title="Minus">-</button>
+			<select data-role="none" class="select-quantity" value="" total="" title="Select quantity">
+				<% _.each( attributes.price, function( price ) { %>
+					<option value=<%= price.amount %> data-total=<%= price.total*(1-attributes.special) %>><%= price.amount %><%= (_.intersection(attributes.category, ["Herb", "Concentrate","Wax"]).length) ? ' g' : ' item' %><%= (price.amount>1) ? 's' : '' %> for $<%= Math.round(price.total*(1-attributes.special)) %></option>
+				<% }); %>
+			</select>
+			<button class="icon-btn plus ui-btn ui-btn-inline" title="Plus">+</button>
+		</div>
+	</script>
+
+
+	<!-- order summary page-->
+	<div data-role="page" id="summary">
+		<div data-role="header" data-position="fixed" data-tap-toggle="false">
+			<h2 class="title">Order summary</h2>
+		</div>
+
+		<ul data-role="listview" class="listview store-list">
+			<li class="" data-icon="false">
+				<a href="" class="store-link main-font"></a>
+			</li>
+		</ul>
+
+		<div class="summary-list"></div>
+
+		<h3 class="status"></h3>
+	</div> <!-- /order summary page -->
+
+
+	<!-- review order page-->
+	<div data-role="page" id="review">
+		<div data-role="header">
+			<span class="back flaticon-left left-option"></span>
+			<h2></h2>
+			<span data-role="none" class="exit right-option">X</span>
+		</div>
+
+
+		<div class="pad">
+			<div class="review-name main-font purple"></div>
+			<div class="review-store gray"></div>
+		</div>
+		<div class="item profile"><div class="item-img"></div></div>
+
+
+		<div class="bottom-fix review-options ui-grid-b">
+			<label>Pick one</label>
+		  	<a title="Bad" class="ui-btn ui-block-a main-link main-font">Bad</a>
+		 	<a title="Good" class="ui-btn ui-block-b main-link main-font">Good</a>
+			<a title="Top" class="ui-btn ui-block-c main-link main-font">Top</a>
+		</div>
+	</div> <!-- /review order page-->
+
+
+	<!-- settings page-->
+	<div id="settings" data-role="page">
+		<div data-role="header">
+			<span class="back flaticon-left left-option"></span>
+			<h2>Settings</h2>
+		</div>
+
+		<span class="pad message gray"></span>
+
+
+		<!-- <label>Contact</label> -->
+<!-- 		<input type="text" name="name" id="update-name-input" class="main-font main-input" value="" placeholder="Name"> -->
+<!-- 		<input type="text" name="phone" id="update-phone-input" class="main-font main-input" value="" placeholder="Phone">
+		<button class="verify-button ui-btn main-font" style="display:none;">Verify</button>
+		<div class="confirm-options" style="display:none;">
+			<input type="text" name="verification" id="confirm-phone-input" class="main-font main-input" value="" placeholder="Verification Code">
+			<button class="confrim-button ui-btn main-font">Confirm</button>
+		</div> -->
+
+		<label>Account</label>
+		<input type="email" name="email" id="update-email-input" class="main-font main-input" value="" placeholder="Email">
+		<input type="password" name="password" id="update-password-input" class="main-font main-input" value="" placeholder="Password">
+		<button class="save-button ui-btn main-font">Save</button>
+
+		<label>Options</label>
+		<button id="verify-settings-link" class="verify ui-btn main-font">Get Verified</button>
+		<button id="logout-link" class="ui-btn main-font">Log Out</button>
+
+	</div> <!-- /settings page-->
+
+
+	<!-- verify page -->
+	<div data-role="page" id="verify">
+		<div data-role="header">
+			<span class="back flaticon-left left-option"></span>
+			<h2>Verification</h2>
+			<span data-role="none" class="exit right-option">X</span>
+		</div>
+		<div role="main" class="ui-content">
+			<div class="verify-input-container">
+			</div>
+			<div class="welcome-options">
+
+			</div>
+		</div>
+	</div><!-- /verify page -->
+
+
+	<!-- Panel menu -->
+	<div data-enhance="false" data-role="panel" id="panel-menu" data-position-fixed="true" data-position="right" data-display="overlay" class="ui-panel ui-panel-position-right ui-panel-display-overlay ui-body-inherit ui-panel-fixed ui-panel-animate ui-panel-closed">
+		<ul data-role="listview" class="listview main-menu-list ui-listview">
+			<input type="text" data-role="none" name="zip" value="" placeholder="ZIP" class="zip-input main-link main-font" autocomplete="off">
+			<button id="user-location-button" class="flaticon-arrow green"></button>
+			<button id="find-zip-button" class="ui-btn green-btn main-link main-font" style="display:none;">Get Started</button>
+			<span class="message gray"></span>
+<!-- 			<li><a href="#" class="delivery-pickup-selection ui-btn">
+				<span class="main-font delivery-link active">Delivery</span>
+				<span class="main-font pickup-link">Pickup</span>
+			</a></li> -->
+			<li><a id="signup-link" class="main-link main-font ui-btn">Sign up</a></li>
+			<li><a id="login-link" class="main-link main-font ui-btn">Log in</a></li>
+			<li><a id="settings-link" href="#settings" class="main-link ui-btn" style="display:none;">
+				<div id="user-link"></div>
+				<div class="main-font">Settings</div>
+			</a></li>
+			<!-- <li><a id="invite-link" class="main-link main-font ui-btn" style="display:none;">Invite</a></li> -->
+			<li><a href="mailto:chris@budhero.com?subject=Support!" class="main-link main-font ui-btn">Support</a></li>
+			<li><a id="verify-link" class="main-link main-font ui-btn green" style="display:none;">Get Verified</a></li>
+			<li><a id="summary-link" class="main-link main-font ui-btn" style="display:none;">Order Summary</a></li>
+			<li><a id="review-link" class="main-link main-font ui-btn green" style="display:none;">Review Order</a></li>
+		</ul>
+	</div><!-- panel menu -->
+
+
+	<!-- notification window -->
+	<div data-enhance="false" id="notification" data-role="footer" data-position="fixed" data-tap-toggle="false" data-fullscreen="true" style="display:none;">
+		<div class="pad">
+			<span class="close">x</span>
+			<span class="notification-message"></span>
+		</div>
+	</div> <!-- /notification window -->
+
+	<div id="main-menu" data-role="footer" data-role="footer" data-position="fixed" data-tap-toggle="false" data-fullscreen="true" class="ui-footer ui-bar-inherit">
+		<div data-role="navbar" class="ui-navbar" role="navigation">
+			<ul class="ui-grid-c first-links">
+				<li class="ui-block-a">
+					<a id="home-link" class="ui-link ui-btn main-link main-tab">
+						<div class="flaticon-home"></div>
+						Home
+					</a>
+				</li>
+				<li class="ui-block-b">
+					<a id="browse-link" class="ui-link ui-btn main-link main-tab">
+						<div class="flaticon-glass"></div>
+						Browse
+					</a>
+				</li>
+				<li class="ui-block-c">
+					<a id="order-link" class="ui-link ui-btn main-link main-tab active empty">
+						<div class="menu-order-total main-font">$0</div>
+						Order
+					</a>
+				</li>
+				<li class="ui-block-d">
+					<a id="menu-panel-link" class="ui-link ui-btn main-link main-tab">
+						<div class="flaticon-user"></div>
+						Profile
+					</a>
+				</li>
+			</ul>
+		</div><!-- /navbar -->
+	</div>
+
+
+	
+</body>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-61874150-1', 'auto');
+	ga('send', 'pageview');
+
+</script>
+
+</html>

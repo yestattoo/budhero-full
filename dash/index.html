@@ -1,0 +1,739 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<title>Sage Dashboard</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="apple-mobile-web-app-title" content="Sage Dash">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<!-- Icons -->
+	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+
+	<link href='../css/jquerymobile-budhero-theme.css' rel='stylesheet' type='text/css'>
+	<link href='../css/jquery.mobile.custom.structure.css' rel='stylesheet' type='text/css'>
+
+	<link href='../css/budhero-dashboard.css' rel='stylesheet' type='text/css'>
+
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js"></script>
+    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script> -->
+    <script src="http://www.parsecdn.com/js/parse-1.3.2.js"></script>
+	<script src="../js/jquery.mobile.custom.js"></script>
+	<script src="../js/dashboard.js"></script>
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+	<!-- welcome page -->
+	<div data-role="page" id="welcome">
+		<!-- <div role="main" class="ui-content"> -->
+			<div class="logo"><span class="main-font">Dashboard</span></div>
+			<div class="welcome-options">
+				<p class="message gray"></p>
+				<input type="email" name="email" id="email-input" class="main-font main-input" value="" placeholder="Email" required>
+				<input type="password" name="password" id="password-input" class="main-font main-input" value="" placeholder="Password" required>
+				<a class="show-reset-link">Reset</a>
+				<a class="show-signup-link">Sign up</a>
+				<button type="submit" id="login-button" class="ui-btn green-btn main-link main-font bottom-link">Log in</button>
+			</div>
+		<!-- </div> -->
+	</div><!-- /main page -->
+
+	<!-- admin page -->
+	<div data-role="page" id="admin">
+		<nav class="top-menu navbar navbar-default navbar-fixed-top">
+			<div class="top-menu-container">
+				<span class="page-title open-panel main-font"><span class="flaticon-left green"></span>Admin</span>
+				<span class="admin-message btn btn-default navbar-btn purple-btn" style="opacity:0;">x</span>
+				<span class="main-options">
+					<button type="button" class="new-store btn btn-default navbar-btn green-btn">New Store</button>
+				</span>
+			</div>
+		</nav>
+
+		<div id="stores">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Top</th>
+						<th>Live</th>
+						<th>Phone</th>
+						<th>Email</th>
+					</tr>
+				</thead>
+				<tbody class="store-list">
+
+				</tbody>
+			</table>
+
+			<a><div class="more-section">
+				<span>View more</span>
+			</div></a>
+		</div>
+
+	</div><!-- /admin page -->
+
+	<script type="text/html" id="store-thumb-template">
+		<td><a class="edit"><%= attributes.name %></a></td>
+		<td><%= attributes.top %></td>
+		<td><%= attributes.live %></td>
+		<td><a href="tel:<%= attributes.phone %>" ><%= attributes.phone %></a></td>
+		<td><a href="mailto:<%= attributes.email %>"><%= attributes.email %></a></td>
+	</script>
+
+	<!-- orders page -->
+	<div id="orders" data-role="page">
+		<nav class="top-menu navbar navbar-default navbar-fixed-top">
+			<div class="top-menu-container">
+				<span class="page-title open-panel main-font"><span class="flaticon-left green"></span>Orders</span>
+				<span class="message btn btn-default navbar-btn purple-btn" style="opacity:0;">x</span>
+				<span class="main-options">
+					<span type="button" class="refresh btn btn-default navbar-btn green-btn">Refresh</span>
+				</span>
+			</div>
+		</nav>	
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th class="hidden-xs">Name</th>
+					<th>Address</th>
+					<th class="hidden-xs">Phone</th>
+					<th class="hidden-xs">Total</th>
+					<th>Status</th>
+					<th>View</th>
+				</tr>
+			</thead>
+			<tbody class="orders">
+
+			</tbody>
+		</table>
+		<div type="button" class="more btn btn-default btn-block">Load More</div>
+
+	</div><!-- /orders page -->
+
+	<script type="text/html" id="order-thumb-template">
+		<td class="hidden-xs"><%= attributes.user.attributes.name %></td>
+		<td>
+			<div class="visible-xs"><%= attributes.user.attributes.name %></div>
+			<a href="http://maps.google.com/?q=<%= attributes.address %>"><%= attributes.address %></a>
+		</td>
+		<td class="hidden-xs"><a href="tel:<%= attributes.user.attributes.phone %>" ><%= attributes.user.attributes.phone %></a></td>
+		<td class="hidden-xs">$<%= Math.round(attributes.total) %></td>
+		<td>
+			<select class="status-select form-control">
+			  <option value="pending" disabled>Pending <%= createdAt.toLocaleTimeString() %></option>
+			  <option value="confirmed">Processing <% if(attributes.processedAt){print(attributes.processedAt.toLocaleTimeString())} %></option>
+			  <option value="confirmed">In Route <% if(attributes.confirmedAt){print(attributes.confirmedAt.toLocaleTimeString())} %></option>
+			  <option value="arrived">Arrived <% if(attributes.arrivedAt){print(attributes.arrivedAt.toLocaleTimeString())} %></option>
+			  <option value="complete">Complete <% if(attributes.completedAt){print(attributes.completedAt.toLocaleTimeString())} %></option>
+			</select>
+		</td>
+
+		<td class="view"><a class="btn btn-default">More</a></td>
+	</script>
+
+	<div id="order-summary" data-role="page">
+		<nav class="top-menu navbar navbar-default navbar-fixed-top">
+			<div class="top-menu-container">
+				<span class="back main-font"><span class="flaticon-left green"></span>Order</span>
+				<span class="message btn btn-default navbar-btn purple-btn" style="opacity:0;">x</span>
+				<span class="main-options">
+					<span type="button" class="view-docs btn btn-default navbar-btn green-btn">View Rec/Id</span>
+<!-- 					<select data-role="none" class="driver-select btn btn-default navbar-btn green-btn">
+						<option selected="selected" disabled="disabled">Select Driver</option>
+						<option value="Tyler">Tyler</option>
+						<option value="Henry">Henry</option>
+					</select> -->
+					<select data-role="none" class="status-select btn btn-default navbar-btn green-btn">
+					  <option value="pending" disabled>Pending</option>
+					  <option value="processed">Processed</option>
+					  <option value="confirmed">In Route</option>
+					  <option value="arrived">Arrived</option>
+					  <option value="complete">Complete</option>
+					</select>
+				</span>
+			</div>
+		</nav>
+
+		<div class="docs">
+		</div>
+		<div class="user-info">
+			
+		</div>
+
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Member Name</th>
+					<th>Address</th>
+					<th>Phone</th>
+					<th>Payment Type</th>
+				</tr>
+			</thead>
+			<tbody class="user-info-table">
+				<tr>
+					<td class="user-name"></td>
+					<td><a class="user-address"></a></td>
+					<td><a class="user-phone"></a></td>
+					<td class="order-payment"></td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table">
+			<p class="order-note purple"></p>
+			<thead>
+				<tr>
+					<th>Created</th>
+					<th>Processing</th>
+					<th>In Route</th>
+					<th>Arrived</th>
+					<th>Completed</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="order-pending"></td>
+					<td class="order-confirmed"></td>
+					<td class="order-arrived"></td>
+					<td class="order-complete"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="summary-list"></div>
+
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>#. Item Name</th>
+					<th class="hidden-xs">Category</th>
+					<th>Amount</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody class="item-summary-table">
+
+			</tbody>
+			<div>
+				<th></th>
+				<th class="hidden-xs"></th>
+				<th></th>
+				<th class="total"></th>
+			</div>
+
+		</table>
+
+	</div>
+
+	<!-- inventory page-->
+	<div id="inventory" data-role="page">
+		<nav class="top-menu navbar navbar-default navbar-fixed-top">
+			<div class="top-menu-container">
+				<span class="page-title open-panel main-font"><span class="flaticon-left green"></span>Inventory</span>
+				<span class="message btn btn-default navbar-btn purple-btn" style="opacity:0;">x</span>
+				<span class="main-options">
+					<span type="button" class="new-item btn btn-default navbar-btn green-btn">+ New Item</span>
+				</span>
+			</div>
+		</nav>
+
+		<table id="inventory-table" class="table table-hover">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Category</th>
+					<th>Availability</th>
+				</tr>
+			</thead>
+			<tbody class="items">
+
+			</tbody>
+		</table>
+
+		<div type="button" class="more btn btn-default btn-block">Load More</div>
+
+	</div><!-- / inventory page-->
+
+	<script type="text/html" id="item-template">
+		<td class="edit"><span class="image-thumb" style="background-image: url(<% if (typeof(attributes.fileThumbSmall)!== 'undefined') { print(attributes.fileThumbSmall._url) } else { %><% } %>)"></span>
+		</td>
+		<td class="edit">
+			<a data-role="none">
+				<%= attributes.name %>
+				<% if(!attributes.name){print('No Name (edit)')} %>
+			</a>
+		</td>
+		<td class="edit"><%= attributes.category %></td>
+		<td>
+			<select data-role="none" class="live-select form-control">
+			  	<option value=true>Available</option>
+			  	<option value=false>Out Of Stock</option>
+			</select>
+		</td>
+	</script>
+
+
+	<!-- edit item page -->
+	<div data-role="page" id="item">
+		<nav class="top-menu navbar navbar-default navbar-fixed-top">
+			<div class="top-menu-container">
+				<span class="back main-font"><span class="flaticon-left green"></span>Edit Item</span>
+				<span class="message btn btn-default navbar-btn purple-btn" style="opacity:0;">x</span>
+				<span class="main-options">
+					<select data-role="none" class="live-select btn btn-default navbar-btn green-btn">
+					  	<option value=true>Available</option>
+					  	<option value=false>Out Of Stock</option>
+					</select>
+					<span type="button" id="save-button" class="btn btn-default navbar-btn green-btn">Save</span>
+				</span>
+			</div>
+		</nav>
+
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="name-input" class="col-sm-2 control-label">Title*</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="name-input" placeholder="ex~Jack Herer">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="brand-input" class="col-sm-2 control-label">Brand</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="brand-input" placeholder="ex~Boom Farms">
+				</div>
+			</div>			
+
+			<div class="form-group">
+				<label for="category-select" class="col-sm-2 control-label">Category*</label>
+				<div class="col-sm-10">
+					<select id="category-select" data-role="none" value="Flower" class="btn btn-default navbar-btn" title="Select Category">
+						<option value="Flower">Flower</option>
+						<option value="Concentrate">Concentrate</option>
+						<option value="Edible">Edible</option>
+						<option value="Rolled">Rolled</option>
+						<option value="Tincture">Tincture</option>
+						<option value="Drink">Drink</option>
+						<option value="Topical">Topical</option>
+						<option value="Clone">Clone</option>
+						<option value="Seed">Seed</option>
+						<option value="Vape">Vape</option>
+						<option value="Glass">Glass</option>
+						<option value="Gear">Gear</option>
+						<option value="Other">Other</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group inline-form" style="display:none;">
+				<label class="col-sm-2 control-label">Inventory</label>
+				<div class="col-sm-10">
+					<div class="row">
+						<div class="col-sm-4 col-xs-12">
+							<div class="input-group inventory-lbs">
+								<input data-role="none" type="number" class="form-control" id="inventory-lbs-input" placeholder="00">
+								<div class="input-group-addon">lbs</div>
+							</div>
+						</div>
+						<div class="col-sm-4 col-xs-12 inventory-ozs">
+							<div class="input-group">
+								<input data-role="none" type="number" class="form-control" id="inventory-ozs-input" placeholder="00">
+								<div class="input-group-addon">ozs</div>
+							</div>
+						</div>
+						<div class="col-sm-4 col-xs-12 inventory-gs">
+							<div class="input-group">
+								<input data-role="none" type="number" class="form-control" id="inventory-gs-input" placeholder="00">
+								<div class="input-group-addon">gs</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="type-select" class="col-sm-2 control-label">Type</label>
+				<div class="col-sm-10">
+					<select id="type-select" data-role="none" value="Indica" class="btn btn-default navbar-btn" title="Select Type">
+						<option value=undefined>None</option>
+						<option value="Indica">Indica</option>
+						<option value="Indica,Hybrid">Indica Dominant Hybrid</option>
+						<option value="Hybrid">Hybrid</option>
+						<option value="Sativa,Hybrid">Sativa Dominant Hybrid</option>
+						<option value="Sativa">Sativa</option>
+						
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="description-input" class="col-sm-2 control-label">Description</label>
+				<div class="col-sm-10">
+					<textarea data-role="none" rows="10" class="form-control" id="description-input" placeholder=""></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Price Options*</label>
+				<div class="col-sm-10">
+					<div class="prices pad">
+
+					</div>
+					<a type="button" data-role="none" class="add btn btn-default btn-block">Add Price Option</a>
+				</div>
+			</div>
+
+			<div class="form-group inline-form" style="display: none;">
+				<label class="col-sm-2 control-label">Special Discount</label>
+				<div class="col-sm-10">
+					<div class="input-group">
+						<input data-role="none" type="number" class="form-control" id="special-percent-input" placeholder="00">
+						<div class="input-group-addon">% Off</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group special-price">
+				<label class="col-sm-2 control-label">Special Price</label>
+				<div class="col-sm-10">
+					<div class="special-prices pad">
+
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Image*</label>
+				<div class="col-sm-10">
+					<div class="image-upload pad" style="max-width: 480px;">
+						<div class="item profile"><div class="item-img"></div></div>
+						<p class="image-message gray"></p>
+						<input id="image-input" type="file" accept="image/*">
+					</div>
+				</div>
+			</div>
+
+		</form>
+
+
+		<!-- if lab tested, show test results input-->
+		<!-- input types and total % -->
+<!-- 		<div id="test-results">
+			<label>Test Results</label>
+			<input type="text" name="lab" id="lab-input" class="main-link main-font main-input" value="" placeholder="Lab">
+		</div> -->
+		
+		<!-- if admin or author, show featured switch -->
+		<!-- also add non mvp options, like lab... other admin options as well? -->
+<!-- 		<div id="admin-options" style="display:none;">
+			<fieldset>
+				<div data-role="fieldcontain">
+				<span class="pad">Featured:</span>
+				<select id="featured-select" data-role="flipswitch">
+					<option value="false">No</option>
+					<option value="true">Yes</option>
+				</select>
+				</div>
+			</fieldset>
+		</div> -->
+
+	</div><!-- /edit item page -->
+	
+	<script type="text/html" id="price-template">
+		<fieldset class="price-option ui-grid-a">
+		    <div class="ui-block-a">
+		    	<label>Price($) for</label>
+		    	<input type="number" name="price" id="price-input" class="main-input" value="" placeholder="price">
+		    </div>
+		    <div class="ui-block-b">
+		    	<label>Amount(grams/items)</label>
+		    	<input type="number" name="amount" id="amount-input" class="main-input" value="" placeholder="amount">
+		    </div>
+		</fieldset>
+	</script>
+
+
+	<!-- edit store profile page -->
+	<div id="profile" data-role="page">
+		<nav class="top-menu navbar navbar-default navbar-fixed-top">
+			<div class="top-menu-container">
+				<span class="page-title open-panel main-font"><span class="flaticon-left green"></span>Profile</span>
+				<span class="message btn btn-default navbar-btn purple-btn" style="opacity:0;">x</span>
+				<span class="main-options">
+					<select data-role="none" class="live-select btn btn-default navbar-btn green-btn">
+					  	<option value=true>Live</option>
+					  	<option value=false>Draft</option>
+					</select>
+					<span type="button" id="profile-save-button" class="btn btn-default navbar-btn green-btn">Save</span>
+				</span>
+			</div>
+		</nav>
+
+		<form class="form-horizontal">
+
+			<div class="form-group">
+				<label for="name-input" class="col-sm-2 control-label">Collective Name*</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="name-input" placeholder="ex~Marina Green" required>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="link-input" class="col-sm-2 control-label">Profile Link*</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="link-input" placeholder="exploresage.com/#username" required>
+					<p class="link-message gray"></p>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="email-input" class="col-sm-2 control-label">Email*</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="email" class="form-control" id="email-input" placeholder="ex~contact@exploresage.com" required>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="contact-input" class="col-sm-2 control-label">Contact Name</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="contact-input" placeholder="ex~Chris" required>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="address-input" class="col-sm-2 control-label">Address*</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="address-input" placeholder="ex~1111 1st Street, Greenville, CA" required>
+					<p class="address-message gray"></p>
+				</div>
+			</div>
+
+<!-- 			<div class="form-group">
+				<label for="pickup-input" class="col-sm-2 control-label">Pickup Available</label>
+				<div class="col-sm-10">
+					<select id="pickup-select" data-role="flipswitch">
+						<option value="false">No</option>
+						<option value="true">Yes</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="pickup-input" class="col-sm-2 control-label">Delivery Available</label>
+				<div class="col-sm-10">
+					<select id="delivery-select" data-role="flipswitch">
+						<option value="false">No</option>
+						<option value="true">Yes</option>
+					</select>
+				</div>
+			</div> -->
+
+			<div class="form-group">
+				<label for="radius-input" class="col-sm-2 control-label">Delivery Radius*</label>
+				<div class="col-sm-10">
+					<div class="input-group">
+						<input data-role="none" type="number" class="form-control" id="radius-input" placeholder="00">
+						<div class="input-group-addon">Miles</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<label for="min-input" class="col-sm-2 control-label">Minimum Order</label>
+				<div class="col-sm-10">
+					<div class="input-group">
+						<div class="input-group-addon">$</div>
+						<input data-role="none" type="number" class="form-control" id="min-input" placeholder="00">
+						<div class="input-group-addon">.00</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="payment-input" class="col-sm-2 control-label">Payment Options*</label>
+				<div class="col-sm-10">
+					<label class="checkbox-inline">
+						<input data-role="none" type="checkbox" id="cash-check" value="Cash"> Cash
+					</label>
+<!-- 					<label class="checkbox-inline">
+						<input data-role="none" type="checkbox" id="credit-check" value="Debit"> Debit
+					</label>
+					<label class="checkbox-inline">
+						<input data-role="none" type="checkbox" id="debit-check" value="Credit"> Credit
+					</label> -->
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="description-input" class="col-sm-2 control-label">Description</label>
+				<div class="col-sm-10">
+					<textarea data-role="none" rows="14" class="form-control" id="description-input" placeholder=""></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+
+				<label class="col-sm-2 control-label">Hours</label>
+				<div class="col-xs-12 col-sm-6">
+
+					<div class="col-xs-6">
+						<span>Monday Open</span>
+						<input data-role="none" id="monday-open-input" type="time" class="form-control" name="Monday Close">
+					</div>
+					<div class="col-xs-6">
+						<span>Monday Close</span>
+						<input data-role="none" id="monday-close-input" type="time" class="form-control" name="Monday Open">						
+					</div>
+
+					<div class="col-xs-6">
+						<span>Tuesday Open</span>
+						<input data-role="none" id="tuesday-open-input" type="time" class="form-control" name="Tuesday Close">
+					</div>
+					<div class="col-xs-6">
+						<span>Tuesday Close</span>
+						<input data-role="none" id="tuesday-close-input" type="time" class="form-control" name="Tuesday Open">						
+					</div>
+
+					<div class="col-xs-6">
+						<span>Wednesday Open</span>
+						<input data-role="none" id="wednesday-open-input" type="time" class="form-control" name="Wednesday Close">
+					</div>
+					<div class="col-xs-6">
+						<span>Wednesday Close</span>
+						<input data-role="none" id="wednesday-close-input" type="time" class="form-control" name="Wednesday Open">						
+					</div>
+
+					<div class="col-xs-6">
+						<span>Thursday Open</span>
+						<input data-role="none" id="thursday-open-input" type="time" class="form-control" name="Thursday Close">
+					</div>
+					<div class="col-xs-6">
+						<span>Thursday Close</span>
+						<input data-role="none" id="thursday-close-input" type="time" class="form-control" name="Thursday Open">						
+					</div>
+
+					<div class="col-xs-6">
+						<span>Friday Open</span>
+						<input data-role="none" id="friday-open-input" type="time" class="form-control" name="Friday Close">
+					</div>
+					<div class="col-xs-6">
+						<span>Friday Close</span>
+						<input data-role="none" id="friday-close-input" type="time" class="form-control" name="Friday Open">						
+					</div>
+
+					<div class="col-xs-6">
+						<span>Saturday Open</span>
+						<input data-role="none" id="saturday-open-input" type="time" class="form-control" name="Saturday Close">
+					</div>
+					<div class="col-xs-6">
+						<span>Saturday Close</span>
+						<input data-role="none" id="saturday-close-input" type="time" class="form-control" name="Saturday Open">						
+					</div>
+
+					<div class="col-xs-6">
+						<span>Sunday Open</span>
+						<input data-role="none" id="sunday-open-input" type="time" class="form-control" name="Sunday Close">
+					</div>
+					<div class="col-xs-6">
+						<span>Sunday Close</span>
+						<input data-role="none" id="sunday-close-input" type="time" class="form-control" name="Sunday Open">						
+					</div>
+				</div>
+			</div>
+
+			<h1 class="pad">Contact</h1>
+
+			<div class="form-group">
+				<label for="phone-input" class="col-sm-2 control-label">Phone Number*</label>
+				<div class="col-sm-10">
+					<div class="input-group">
+						<div class="input-group-addon">+1</div>
+						<input data-role="none" type="number" class="form-control" id="phone-input" placeholder="5555555555">
+					</div>
+					<p class="phone-message gray"></p>
+					<div type="button" class="verify-button btn btn-default btn-block">Verify</div>
+					<div class="confirm-options" style="display: none;">
+						<spam>Phone Verification Number</span>
+						<input data-role="none" type="number" class="form-control" id="confirm-phone-input" placeholder="123">
+						<div type="button" class="confrim-button btn btn-default btn-block">Confirm</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="website-input" class="col-sm-2 control-label">Website</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="website-input" placeholder="ex~mysite.com">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="instagram-input" class="col-sm-2 control-label">Instagram Link</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="instagram-input" placeholder="instagram.com/username">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="facebook-input" class="col-sm-2 control-label">Facebook Link</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="facebook-input" placeholder="facebook.com/username">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="twitter-input" class="col-sm-2 control-label">Twitter Link</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="twitter-input" placeholder="twitter.com/username">
+				</div>
+			</div>
+
+		</form>
+
+	</div><!-- /edit store profile page -->
+
+	<!-- settings page -->
+	<div id="settings" data-role="page">
+		<nav class="top-menu navbar navbar-default navbar-fixed-top">
+			<div class="top-menu-container">
+				<span class="page-title open-panel main-font"><span class="flaticon-left green"></span>Settings</span>
+				<span class="message btn btn-default navbar-btn purple-btn" style="opacity:0;">x</span>
+				<span class="main-options">
+					<span type="button" id="logout-link" class="btn btn-default navbar-btn green-btn">Log Out</span>
+					<span type="button" id="settings-save-button" class="btn btn-default navbar-btn green-btn">Save</span>
+				</span>
+			</div>
+		</nav>
+
+
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="password-input" class="col-sm-2 control-label">Update Password</label>
+				<div class="col-sm-10">
+					<input data-role="none" type="text" class="form-control" id="password-input" placeholder="************">
+				</div>
+			</div>
+		</form>
+	</div><!-- /settings page -->
+
+
+	<!-- Panel menu -->
+	<div data-enhance="true" data-role="panel" id="menu" data-dismissible="true" data-position-fixed="true" data-position="left" data-display="push" class="ui-panel ui-panel-position-left ui-body-inherit ui-panel-fixed ui-panel-animate ui-panel-closed">
+		<ul data-role="listview" class="listview main-menu-list ui-listview">
+			<!-- <li class=""><div class="main-font">Sage</div></li> -->
+			<li><a class="main-font ui-btn main-link active">Welcome</a></li>
+		</ul>
+	</div><!-- panel menu -->
+
+</body>
+
+</html>
